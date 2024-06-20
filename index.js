@@ -25,7 +25,7 @@ initialiseSocket(server);
 
 app.use(
     cors({
-        origin: "https://sagar-chat-app.netlify.app/",
+        origin: "*",
         credentials: true,
     })
 );
