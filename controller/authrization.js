@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const otpGenerator = require("otp-generator");
 const OTP = require("../models/OTP");
-const AdditionalDetails = require("../models/AdditionalDetails");
 const mailsender = require("../utils/mailSand");
 const { UpdatedPasswordTemplate } = require("../Email_Template/UpdatedPasswordTemplate");
 

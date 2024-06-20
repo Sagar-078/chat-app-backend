@@ -1,4 +1,3 @@
-const AdditionalDetails = require("../models/AdditionalDetails");
 const User = require("../models/userModel");
 const Chat = require("../models/chatappmodule");
 const { uploadImageToCloudinary } = require("../utils/imageUploaderToCloudinary");
