@@ -1,0 +1,34 @@
+{
+  "name": "chatapp-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cloudinary": "^2.0.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^16.3.2",
+    "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
+    "express-fileupload": "^1.5.0",
+    "file-uploader": "^1.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.1.0",
+    "nodemailer": "^6.9.13",
+    "nodemon": "^3.0.3",
+    "otp-generator": "^4.0.1",
+    "randombytes": "^2.1.0",
+    "react-otp-input": "^3.1.1",
+    "socket.io": "^4.7.5"
+  }
+}
