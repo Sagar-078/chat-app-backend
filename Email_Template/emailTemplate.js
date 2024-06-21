@@ -67,13 +67,10 @@ const emailTemplate = (otp) => {
 	
 	</head>
 	
-	// https://studynotionv1.netlify.app
-	// here i will be change at the end
-    /// dj xyz
 
 	<body>
 		<div class="container">
-			<a href="http://localhost:3000/">
+			<a href="http://sagar-chat-app.netlify.app/dashboard">
 				<div class="Logo">
 					cHaT-aPp
 				</div>
