@@ -56,7 +56,7 @@ exports.UpdatedPasswordTemplate = (email, name) => {
     <body>
     
         <div class="container">
-            <a href="http://localhost:3000/"">
+            <a href="http://sagar-chat-app.netlify.app/dashboard">
                 <div class="Logo">
                     cHaT-aPp
                 </div>
