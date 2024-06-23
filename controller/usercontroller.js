@@ -117,14 +117,17 @@ exports.deleteAccount = async(req, res) => {
             })
         }
 
-        const chatDetails = await Chat.find({users: {$elemMatch: {$eq: req.user.id }}}, {new: true})
-        console.log("chat details is =>>", chatDetails._id);
+        const chatDetails = await Chat.find({users: {$in:[userId]}})
 
         // remove user from chats
-        await Chat.findByIdAndDelete(chatDetails);
-
-        //delete addtional details
-        //await AdditionalDetails.findByIdAndDelete({_id: userDetails.additionalDetails})
+        for(const chat of chatDetails){
+            if(chat.users.length === 2){
+                await Chat.findByIdAndDelete(chat._id)
+            }else{
+                chat.users = chat.users.filter(id => id.toString() !== userId);
+                await chat.save()
+            }
+        }
 
         // delete user 
         const userUpdate = await User.findByIdAndDelete({_id: userId});
