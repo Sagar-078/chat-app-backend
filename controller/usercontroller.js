@@ -8,15 +8,13 @@ exports.getallusers = async (req, res) => {
     
     try{
 
-        // search basis of name or email if dosn't
         const keyword = req.query.search ? {
             
             // neme: {$regex: req.query.search, $options: "i"}
 
             // user can search a user by name or email 
             $or: [
-                // $regex use for pattern metching on string in mongo db 
-                {neme: {$regex: req.query.search, $options: "i"}}, // i use for case insensitive
+                {neme: {$regex: req.query.search, $options: "i"}},
                 {email: {$regex: req.query.search, $options: "i"}},
             ]
         }: {};
@@ -25,8 +23,6 @@ exports.getallusers = async (req, res) => {
             return;
         }
    
-
-        // find all users by this keyword, without this loggedin user or who want to fetch 
         const users = await User.find(keyword).find({_id: {$ne: req.user.id}});
 
 
@@ -119,7 +115,6 @@ exports.deleteAccount = async(req, res) => {
 
         const chatDetails = await Chat.find({users: {$in:[userId]}})
 
-        // remove user from chats
         for(const chat of chatDetails){
             if(chat.users.length === 2){
                 await Chat.findByIdAndDelete(chat._id)
