@@ -17,11 +17,9 @@ exports.chatrouter = async(req, res) => {
        });
     }
 
-    // if userid is prasent then check chat is prasent with this user
     const chat = await Chat.findOne({
         users:{$all:[myId,friendId]},isGroupChat:false
     })
-    // console.log("my id, friend id ", myId, friendId);
 
     if(chat){
         return res.status(200).json({
@@ -90,7 +88,6 @@ exports.getchatdetails = async(req,res)=>{
 // get chats of a user
 exports.getchat = async(req, res) => {
     try{
-        //in chat model fron users arr if match equal to logged in usetr 
         const userId = req.user.id;
         if(!userId){}
         const chats = await Chat.find({users:{$in:[userId]}}).populate({
@@ -135,7 +132,6 @@ exports.creategroup = async(req, res) => {
         }
 
 
-        // group mebers are atlist morethen 2 users
         if(users.length < 2){
             return res.status(500).json({
                 success: false,
@@ -144,7 +140,6 @@ exports.creategroup = async(req, res) => {
         }
 
         try{
-            // create a group chart
             const groupChatCreate = await Chat.create({
                 chatName: name,
                 users: [...users,user],
@@ -153,7 +148,6 @@ exports.creategroup = async(req, res) => {
                 groupIcon: `https://api.dicebear.com/5.x/initials/svg?seed=${name}`
             });
 
-            // finnd chat from db and send to user
             const fullGroupChat = await Chat.findOne({_id: groupChatCreate._id})
             .populate("users")
             .populate("groupAdmin")
@@ -210,7 +204,6 @@ exports.groupNameUpdate = async(req, res) => {
             });
         }
 
-        // find by chatId and update chatName
         const updatedChat = await Chat.findByIdAndUpdate(chatId, {chatName})
         .populate("users")
         .populate("groupAdmin")
@@ -300,15 +293,12 @@ exports.showUserForAdd = async(req, res) => {
 }
 
 
-// add to group a user
 exports.addToGroup =  async (req, res) => {
     
     try{
 
         const {groupId, userId} = req.body;
 
-        
-        // if user alrady exist in group 
         const existUsers = await Chat.findOne({_id: groupId})
 
         if(existUsers.users.indexOf(userId) !== -1){
@@ -320,7 +310,6 @@ exports.addToGroup =  async (req, res) => {
 
         try{
 
-            // other wise push this user to this group by its id
             const addtogroupUser = await Chat.findByIdAndUpdate(groupId, 
                                                 {$push:{users: userId}})
 
