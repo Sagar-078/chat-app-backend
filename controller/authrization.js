@@ -15,7 +15,6 @@ exports.sendOTP = async (req, res) => {
         const {email} = req.body;
         // console.log("email", email);
 
-        // check is user alrady register on the basis of email
         const registeredUser = await User.findOne({email:email});
         // console.log("registeruser", registeredUser);
 
@@ -29,7 +28,6 @@ exports.sendOTP = async (req, res) => {
         }
 
 
-        // generate otp
         const otp = otpGenerator.generate(4, {
             upperCaseAlphabets: false,
             lowerCaseAlphabets: false,
@@ -38,7 +36,6 @@ exports.sendOTP = async (req, res) => {
 
         console.log("generated otp: ", otp);
 
-        // create entry in db for otp
         await OTP.create({'email':email, 'otp':otp})
 
         return res.status(200).json({
@@ -81,7 +78,6 @@ exports.signUp = async(req, res) => {
         }
 
 
-        // check is this user alrady exist on basis of email
         const existingUser = await User.findOne({email: email});
 
         if(existingUser){
@@ -91,8 +87,6 @@ exports.signUp = async(req, res) => {
             });
         };
 
-        // else user doesn't exist in db
-        // find the most recent otp stored in db for this user
         
         const recentOtp = await OTP.find({email: email}).sort({createdAt:-1}).limit(1);
 
@@ -149,12 +143,10 @@ exports.signUp = async(req, res) => {
 };
 
 
-// creating a function for login
 exports.login = async(req, res) => {
     try{
         const {email, password} = req.body;
 
-        // validation of mail, password is empty or filled
         if(!email || !password){
             return res.status(400).json({
                 success: false,
@@ -162,11 +154,10 @@ exports.login = async(req, res) => {
             });
         }
 
-        // if all detail are fill then check user is exist or not on the basis of email
         const user = await User.findOne({email});
         // console.log(user);
 
-        // if user not exist then 
+
         if(!user){
             return res.status(401).json({
                 success: false,
@@ -174,8 +165,6 @@ exports.login = async(req, res) => {
             });
         }
 
-        // if user exist, then verify password and create jwt token
-        // using of bcrypt compare function
         if(await bcrypt.compare(password, user.password)){
 
             const payload = {
@@ -186,7 +175,6 @@ exports.login = async(req, res) => {
 
             // console.log("payload", payload);
 
-            // in case of password metch then create a token
             const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: "60d"});
 
             // console.log("token at create=>>", token);
@@ -254,7 +242,6 @@ exports.changePassword = async(req, res) => {
             });
         }
 
-        // is old pass is correct
         const isPasswordCorrect = await bcrypt.compare(oldPassword, user.password);
 
         if(!isPasswordCorrect){
@@ -264,17 +251,13 @@ exports.changePassword = async(req, res) => {
             });
         }
 
-        // else if it is correct then hash the new pass
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-        // then update to user 
         const updatedUser = await User.findByIdAndUpdate(
             req.user.id,
             {password: hashedPassword},
             {new: true}
         );
-
-        // then want to send a mail for updated
 
         try{
 
