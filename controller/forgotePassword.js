@@ -20,15 +20,12 @@ exports.sendForgotePasswordToken = async(req, res) => {
             });
         }
 
-
-        // generate otp
         const otp = otpGenerator.generate(4, {
             upperCaseAlphabets: false,
             lowerCaseAlphabets: false,
             specialChars: false,
         })
 
-        // create entry in db for otp
         await OTP.create({'email':email, 'otp':otp})
 
         return res.status(200).json({
@@ -49,8 +46,6 @@ exports.sendForgotePasswordToken = async(req, res) => {
 }
 
 
-
-// for verify forgote otp 
 exports.verifyForgoteOtp = async(req, res) => {
     try{
 
@@ -105,7 +100,6 @@ exports.verifyForgoteOtp = async(req, res) => {
 }
 
 
-// reset password by this token
 exports.forgotePasswordUpdate = async(req, res) => {
     try{
 
@@ -118,10 +112,8 @@ exports.forgotePasswordUpdate = async(req, res) => {
             });
         }
 
-        // else find the user by this token
         const user = await User.findOne({email: email});
 
-        // if user invalid
         if(!user){
             return res.status(403).json({
                 success: false,
@@ -129,10 +121,8 @@ exports.forgotePasswordUpdate = async(req, res) => {
             });
         }
 
-        // then hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // password updateto user
         await User.findOneAndUpdate({email: email}, {password: hashedPassword}, {new: true});
 
         return res.status(200).json({
